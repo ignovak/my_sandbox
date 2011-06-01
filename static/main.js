@@ -2,6 +2,11 @@ function cl(s) {
   console.log(s)
 };
 
+// TODO: consider another format, like:
+// RULES = [
+//   {for : 'name', type: 'required', onerror: 'missingName'},
+//   {...}
+// ]
 
 RULES = {
   name: {
@@ -61,7 +66,7 @@ function bridge(rule, val, args) {
   return f(val, args)
 }
 
-function validateInput() {
+function validateAllInputs() {
   for (var field in RULES) {
     val = document.getElementsByName(field)[0].value
     for (var rule in RULES[field]) {
@@ -76,7 +81,40 @@ function validateInput() {
   return true
 }
 
+function validateInput(name) {
+  var val = document.getElementsByName(name)[0].value,
+      rule,
+      error;
+
+  for (rule in RULES[name]) {
+    error = bridge(rule, val, RULES[name][rule]);
+    if (error) {
+      console.log(error);
+      showError(error);
+      return false;
+    }
+  }
+  return true;
+}
+
+function showError(error) {
+  alert(error);
+};
+
 document.getElementsByName('form')[0].onsubmit = function () {
-  cl('submit');
-  return validateInput();
+  for (var name in RULES) {
+    if (!validateInput(name)) { 
+      return false;
+    };
+  };
+};
+
+var inputs = document.getElementsByTagName('input')
+for (var i in inputs) {
+  field = inputs[i]
+  // field.onchange = 
+  field.onblur = function (e) {
+    e.stopPropagation();
+    return validateInput(this.name);
+  };
 };
