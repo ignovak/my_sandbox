@@ -49,6 +49,7 @@ HANDLERS = {
   },
   type: function(val, args) {
     var regexp = {
+      // add typical regexps here
       email: /^[-.\w]+@(?:[a-z\d][-a-z\d]+\.)+[a-z]{2,6}$/
     }[args.type];
     if (!val.match(regexp))
@@ -63,34 +64,29 @@ function validateInput(name) {
 
   val = val.replace(/^\s*/, '').replace(/\s*$/, '');
   for (rule in RULES[name]) {
-    error = HANDLERS[rule](val, RULES[name][rule]);
-    if (error) {
-      showError(error, name);
-      return false;
+    if (error = HANDLERS[rule](val, RULES[name][rule])) {
+      return showError(error);
     }
   }
   return true;
 }
 
-function showError(error, name) {
-  // argument 'name' is not necessary at this point
-  // it just gives more possibilities
-  document.getElementsByName(name)[0].focus();
+// implement way to show message to user
+// consider passing argument 'name' for more options
+function showError(error) {
   alert(error);
+  return false;
 };
 
 function bindHandlerToEl(name, event) {
-  var el = document.getElementsByName(name)[0];
-  if (el.nodeName == 'FORM') {
-    el[event] = function () {
+  document.getElementsByName(name)[0][event] = function () {
+    if (this.nodeName == 'FORM') {
       for (var field in RULES) {
-        if (el.document.getElementsByName(field)[0] && !validateInput(name)) { 
+        if (!validateInput(field)) { 
           return false;
         };
       };
-    };
-  } else {
-    el[event] = function () {
+    } else {
       return validateInput(this.name);
     };
   };

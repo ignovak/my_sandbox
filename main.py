@@ -38,21 +38,6 @@ RULES = {
   }
 }
 
-# RULES = {
-#   'name': {
-#      'required': True,
-#      'limit': 100
-#   },
-#   'phone': {
-#      'required': True,
-#      'type': 'phone'
-#   },
-#   'email': {
-#      'required': True,
-#      'type': 'email'
-#   }
-# }
- 
 def limit(val, args):
   if len(val) > args['limit']:
     return args['onerror']
@@ -105,7 +90,6 @@ class Main(webapp.RequestHandler):
           logging.info(error)
           return False
     return True
-    # self.response.out.write(i + ': ' + self.request.get(i))
     
 class Others(webapp.RequestHandler):
   def get(self):

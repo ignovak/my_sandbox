@@ -1,5 +1,5 @@
-application: form-validation
-version: 1
+application: i-novak
+version: form-validation
 
 runtime: python
 api_version: 1
