@@ -111,7 +111,6 @@ class Others(webapp.RequestHandler):
   def get(self):
     page = self.request.path[1:]
     path = os.path.join('ok.html')
-    path = os.path.join('%s.html' % page)
     params = {
         'label': 'Thank you!' if page == 'ok' else 'Error!'
         }
