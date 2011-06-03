@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html lang='en'>
+<head>
+	<meta charset='utf-8'>
+	<title></title>
+  <style type='text/css'>
+    h1 {
+      display: none;
+    }
+    #img {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+	<!-- <img src='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD//gATQ3JlYXRlZCB3aXRoIEdJTVD/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAAKAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAj/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AIyAB//Z' id='img' /> -->
+  <h1>Images are disabled</h1>
+	<img src='http://google.com/intl/en_com/images/srpr/logo1w.png' id='img' onload='ready()'/>
+  <script type='text/javascript' charset='utf-8'>
+setTimeout(function() {
+  document.getElementsByTagName('h1')[0].style.display = 'block'
+}, 1000);
+
+function ready() {
+  document.getElementsByTagName('h1')[0].innerText = 'Images are enabled'
+};
+  </script>
+</body>
+</html>
