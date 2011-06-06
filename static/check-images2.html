@@ -15,20 +15,21 @@
   </style>
 </head>
 <body>
-  <h1>Images are disabled</h1>
+  <h1 id='header'>Images are disabled</h1>
 	<img src='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD//gATQ3JlYXRlZCB3aXRoIEdJTVD/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAAKAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAj/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AIyAB//Z' id='img' onload='onImgLoad()' />
   <!--[if IE]>
     <img src='1.jpg' id='img' onload='onImgLoad()' />
   <![endif]-->
-  <script type='text/javascript' charset='utf-8'>
 
+  <script type='text/javascript' charset='utf-8'>
+window.header = document.getElementById('header');
 window.onload = function () {
-  document.getElementsByTagName('h1')[0].style.display = 'block'
+  header.style.display = 'block'
 };
 function onImgLoad() {
   // doesn't work in Safari without this checking
   if (document.getElementById('img').offsetWidth > 0)
-    document.getElementsByTagName('h1')[0].innerHTML = 'Images are enabled'
+    header.innerText = header.innerHTML = 'Images are enabled'
 };
   </script>
 </body>

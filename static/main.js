@@ -99,6 +99,3 @@ function bindHandlerToEl(name, event) {
     bindHandlerToEl(inputs[i], 'onblur');
   };
 })();
-
-console.log(document.getElementById('img').offsetWidth);
-console.log('img is ready');
