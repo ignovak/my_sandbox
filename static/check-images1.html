@@ -8,7 +8,7 @@
       display: none;
     }
     #img {
-      top: 9000px;
+      left: -9000px;
       position: absolute;
       visibility: hidden;
     }
@@ -24,7 +24,6 @@ window.onload = function () {
 };
 function onImgLoad() {
   // doesn't work in Safari without this checking
-  console.log(document.getElementById('img').offsetWidth);
   if (document.getElementById('img').offsetWidth > 0) {
     document.getElementsByTagName('h1')[0].innerHTML = 'Images are enabled'
   }
