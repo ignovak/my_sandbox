@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html lang='en'>
+<head>
+	<meta charset='utf-8'>
+	<title></title>
+  <style type='text/css'>
+    h1 {
+      display: none;
+    }
+    #img {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Images are disabled</h1>
+	<img src='data:image/jpeg;base64,/9j/4AAQSkZJRgABAQEASABIAAD//gATQ3JlYXRlZCB3aXRoIEdJTVD/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAAKAAoDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAj/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AIyAB//Z' id='img' onload='onImgLoad()' />
+  <!--[if IE]>
+    <img src='1.jpg' id='img' onload='onImgLoad()' />
+  <![endif]-->
+  <script type='text/javascript' charset='utf-8'>
+
+window.onload = function () {
+  document.getElementsByTagName('h1')[0].style.display = 'block'
+};
+function onImgLoad() {
+  document.getElementsByTagName('h1')[0].innerText = 'Images are enabled'
+};
+  </script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html lang='en'>
+<head>
+	<meta charset='utf-8'>
+	<title></title>
+  <style type='text/css'>
+    h1 {
+      display: none;
+    }
+    #img {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Images are disabled</h1>
+  <img src='1.jpg' id='img' onload='onImgLoad()' />
+
+  <script type='text/javascript' charset='utf-8'>
+window.onload = function () {
+  document.getElementsByTagName('h1')[0].style.display = 'block'
+};
+function onImgLoad() {
+  document.getElementsByTagName('h1')[0].innerText = 'Images are enabled'
+};
+  </script>
+</body>
+</html>
