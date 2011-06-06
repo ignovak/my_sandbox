@@ -6,31 +6,31 @@
 
 RULES = {
   name: {
-     required: {
-        onerror: 'missingName'
-     },
-     limit: {
-        limit: 100,
-        onerror: 'tooLongName'
-     }
+    required: {
+       onerror: 'missingName'
+    },
+    limit: {
+       limit: 100,
+       onerror: 'tooLongName'
+    }
   },
   phone: {
-     required: {
-        onerror: 'missingPhone'
-     },
-     regexp: {
-        regexp: '^(\\d{5,7}|(\\(\\d{3}\\)|\\d{3})\\d{7}|\\+\\d{1,3}(\\(\\d{3}\\)|\\d{3})\\d{7})$',
-        onerror: 'incorrectPhone'
-     }
+    required: {
+       onerror: 'missingPhone'
+    },
+    regexp: {
+       regexp: '^(\\d{5,7}|(\\(\\d{3}\\)|\\d{3})\\d{7}|\\+\\d{1,3}(\\(\\d{3}\\)|\\d{3})\\d{7})$',
+       onerror: 'incorrectPhone'
+    }
   },
   email: {
-     required: {
-        onerror: 'missingName'
-     },
-     type: {
-        type: 'email',
-        onerror: 'incorrectEmail'
-     }
+    required: {
+       onerror: 'missingName'
+    },
+    type: {
+       type: 'email',
+       onerror: 'incorrectEmail'
+    }
   }
 }
 
@@ -72,7 +72,7 @@ function validateInput(name) {
 }
 
 // implement way to show message to user
-// consider passing argument 'name' for more options
+// consider passing field's name or id for more options
 function showError(error) {
   alert(error);
   return false;
