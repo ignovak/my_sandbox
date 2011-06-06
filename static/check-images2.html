@@ -8,7 +8,9 @@
       display: none;
     }
     #img {
-      display: none;
+      top: 9000px;
+      position: absolute;
+      visibility: hidden;
     }
   </style>
 </head>
@@ -24,7 +26,9 @@ window.onload = function () {
   document.getElementsByTagName('h1')[0].style.display = 'block'
 };
 function onImgLoad() {
-  document.getElementsByTagName('h1')[0].innerText = 'Images are enabled'
+  // doesn't work in Safari without this checking
+  if (document.getElementById('img').offsetWidth > 0)
+    document.getElementsByTagName('h1')[0].innerHTML = 'Images are enabled'
 };
   </script>
 </body>
