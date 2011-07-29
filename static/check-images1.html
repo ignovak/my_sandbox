@@ -1,0 +1,33 @@
+<!DOCTYPE HTML>
+<html lang='en'>
+<head>
+	<meta charset='utf-8'>
+	<title></title>
+  <style type='text/css'>
+    h1 {
+      display: none;
+    }
+    #img {
+      left: -9000px;
+      position: absolute;
+      visibility: hidden;
+    }
+  </style>
+</head>
+<body>
+  <h1 id='header'>Images are disabled</h1>
+  <img src='1.jpg' id='img' onload='onImgLoad()' />
+
+  <script type='text/javascript' charset='utf-8'>
+window.header = document.getElementById('header');
+window.onload = function () {
+  header.style.display = 'block'
+};
+function onImgLoad() {
+  // doesn't work in Safari without this checking
+  if (document.getElementById('img').offsetWidth > 0)
+    header.innerText = header.innerHTML = 'Images are enabled'
+};
+  </script>
+</body>
+</html>
