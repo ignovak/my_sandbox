@@ -1,25 +1,25 @@
 #!/usr/bin/env python
 #-*- coding: utf-8 -*-
 
-def encrypt(s, key):
-  if len(s) % key:
-    s = s + ' ' * (key - len(s) % key)
-
+def _buildArr(s, key):
   arr = []
   while s:
     arr.append(list(s[:key]))
     s = s[key:]
+  return arr
 
+
+def encrypt(s, key):
+  if len(s) % key:
+    s = s + ' ' * (key - len(s) % key)
+
+  arr = _buildArr(s, key)
   return ''.join(map(lambda a: ''.join(a), zip(*arr)))
 
 def decrypt(s, key):
   key = len(s) / key
 
-  arr = []
-  while s:
-    arr.append(list(s[:key]))
-    s = s[key:]
-
+  arr = _buildArr(s, key)
   return ''.join(map(lambda a: ''.join(a), zip(*arr))).strip()
 
 s = """QUnit is a powerful, easy-to-use, JavaScript test suite.
