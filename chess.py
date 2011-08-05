@@ -6,7 +6,7 @@ from time import sleep
 
 class Board():
 
-  def __init__(self):
+  def __init__(self, chars=[]):
     self.SIZE = 8
     self.board = [[0 for i in range(self.SIZE)] for i in range(self.SIZE)]
     self.CHARS = {
@@ -16,6 +16,9 @@ class Board():
       'bishop': ['B', self.__bishop],
       'knight': ['H', self.__knight]
     }
+
+    for char in chars:
+      self.applyChar(char[0], char[1], char[2])
 
   def applyChar(self, name, x, y):
     x -= 1
@@ -35,8 +38,9 @@ class Board():
   def __incrCell(self, x, y):
     y = self.SIZE - 1 - y
     if -1 < x < self.SIZE and -1 < y < self.SIZE:
-      if type(self.board[y][x]).__name__ == 'int':
-        self.board[y][x] += 1
+      if type(self.board[y][x]).__name__ == 'str':
+        return self.board[y][x]
+      self.board[y][x] += 1
 
 
   def __rook(self, x, y):
@@ -44,14 +48,23 @@ class Board():
       self.__incrCell(x, i)
       self.__incrCell(i, y)
 
-  def __bishop(self, x, y):
+  def __bishop(self, x, y, name='B'):
+    # self.__searchConflicts()
     for i in range(0, self.SIZE):
-      self.__incrCell(i, i - x + y)
-      self.__incrCell(i, -i + x + y)
+      char = self.__incrCell(i, i - x + y)
+      if char is not None and char != name:
+        print char
+        break
+
+    for i in range(0, self.SIZE):
+      char = self.__incrCell(i, -i + x + y)
+      if char is not None and char != name:
+        print char
+        break
 
   def __queen(self, x, y):
     self.__rook(x, y)
-    self.__bishop(x, y)
+    self.__bishop(x, y, 'Q')
 
   def __king(self, x, y):
     for i in range(x - 1, x + 2):
@@ -64,8 +77,13 @@ class Board():
         if abs(i) + abs(j) == 3:
           self.__incrCell(x - i, y - j)
 
-b = Board()
-b.applyChar('queen', 5, 3)
+# b.applyChar('queen', 5, 3)
+chars = [
+    ['bishop', 3, 3],
+    ['queen', 7, 7]
+]
+b = Board(chars)
+
 board = map(lambda x: map(lambda y: str(y), x), b.board)
 print '\n'.join(map(lambda x: ' '.join(x), board))
  
