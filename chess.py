@@ -2,11 +2,12 @@
 #-*- coding: utf-8 -*-
 
 from pprint import pprint
+from time import sleep
 
 class Board():
-  SIZE = 8
 
   def __init__(self):
+    self.SIZE = 8
     self.board = [[0 for i in range(self.SIZE)] for i in range(self.SIZE)]
     self.CHARS = {
       'queen':  ['Q',  self.__queen],
@@ -24,14 +25,15 @@ class Board():
       print name + ': invalid coordinate'
       return
 
-    if type(self.board[y][x]).__name__ == 'str':
+    if type(self.board[self.SIZE - 1 - y][x]).__name__ == 'str':
       print name + ': coordinate collision'
       return
     
     self.board[self.SIZE - 1 - y][x] = self.CHARS[name][0]
-    self.CHARS[name][1](x, self.SIZE - 1 - y)
+    self.CHARS[name][1](x, y)
 
   def __incrCell(self, x, y):
+    y = self.SIZE - 1 - y
     if -1 < x < self.SIZE and -1 < y < self.SIZE:
       if type(self.board[y][x]).__name__ == 'int':
         self.board[y][x] += 1
@@ -43,9 +45,9 @@ class Board():
       self.__incrCell(i, y)
 
   def __bishop(self, x, y):
-    for i in range(0, self.SIZE + 1):
+    for i in range(0, self.SIZE):
       self.__incrCell(i, i - x + y)
-      self.__incrCell(self.SIZE - i, i - self.SIZE + x + y)
+      self.__incrCell(i, -i + x + y)
 
   def __queen(self, x, y):
     self.__rook(x, y)
@@ -63,10 +65,10 @@ class Board():
           self.__incrCell(x - i, y - j)
 
 b = Board()
-b.applyChar('queen', 3, 5)
+b.applyChar('queen', 5, 3)
 board = map(lambda x: map(lambda y: str(y), x), b.board)
 print '\n'.join(map(lambda x: ' '.join(x), board))
-
+ 
 count = [0]
 cache = {}
 def mix(a):
@@ -83,6 +85,7 @@ def mix(a):
         res += map(lambda x: [v] + x, mix(a[:k] + a[k + 1:]))
       cache[s] = res
       return res
+
 
 # chars = [i for i in CHARS]
 # pprint(mix(chars))
