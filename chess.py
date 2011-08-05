@@ -19,7 +19,7 @@ class Board():
 
     for char in chars:
       self.applyChar(char[0], char[1], char[2])
-
+  
   def applyChar(self, name, x, y):
     x -= 1
     y -= 1
@@ -34,6 +34,29 @@ class Board():
     
     self.board[self.SIZE - 1 - y][x] = self.CHARS[name][0]
     self.CHARS[name][1](x, y)
+
+  def printBoard(self):
+    print '\n'
+    board = map(lambda x: map(lambda y: str(y), x), self.board)
+    print '\n'.join(map(lambda x: ' '.join(x), board))
+    print '\n'
+
+  def getMax(self):
+    m, x, y = 0, 0, 0
+    for i in range(self.SIZE):
+      for j in range(self.SIZE):
+        if m < self.board[i][j] < 10:
+          m, x, y = self.board[i][j], j + 1, self.SIZE - i
+
+    return m, x, y
+
+  def getQuickMax(self):
+    return max(
+        map(
+          lambda a: max(filter(lambda x: x < 10, a)),
+          self.board
+        )
+    )
 
   def __incrCell(self, x, y):
     y = self.SIZE - 1 - y
@@ -129,10 +152,9 @@ chars = [
 ]
 b = Board(chars)
 
-print '\n'
-board = map(lambda x: map(lambda y: str(y), x), b.board)
-print '\n'.join(map(lambda x: ' '.join(x), board))
-print '\n'
+b.printBoard()
+print b.getMax()
+print b.getQuickMax()
  
 count = [0]
 cache = {}
