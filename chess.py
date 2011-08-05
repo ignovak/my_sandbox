@@ -48,19 +48,41 @@ class Board():
       self.__incrCell(x, i)
       self.__incrCell(i, y)
 
-  def __bishop(self, x, y, name='B'):
-    # self.__searchConflicts()
-    for i in range(0, self.SIZE):
-      char = self.__incrCell(i, i - x + y)
-      if char is not None and char != name:
-        print char
-        break
+  def __getChar(self, x, y):
+    y = self.SIZE - 1 - y
+    if -1 < x < self.SIZE and -1 < y < self.SIZE:
+      return self.board[y][x]
 
+  def __getRanges(self, x, y, name):
+    def getRange(_x, _y):
+      char = self.__getChar(_x, _y)
+      _range = None
+      if type(char).__name__ == 'str' and char != name:
+        if char in ['B', 'Q']:
+          _range = range(min(_x, x), max(_x, x))
+        else:
+          if _x > x:
+            _range = range(0, _x)
+          else:
+            _range = range(_x, self.SIZE)
+        print char, _x + 1, _y + 1
+      return _range
+
+    rangeX = rangeY = range(0, self.SIZE)
     for i in range(0, self.SIZE):
+      rangeX = getRange(i, i - x + y) or rangeX
+      rangeY = getRange(i, -i + x + y) or rangeY
+
+    return (rangeX, rangeY)
+
+  def __bishop(self, x, y, name='B'):
+    rangeX, rangeY = self.__getRanges(x, y, name)
+
+    for i in rangeX:
+      char = self.__incrCell(i, i - x + y)
+
+    for i in rangeY:
       char = self.__incrCell(i, -i + x + y)
-      if char is not None and char != name:
-        print char
-        break
 
   def __queen(self, x, y):
     self.__rook(x, y)
@@ -79,13 +101,16 @@ class Board():
 
 # b.applyChar('queen', 5, 3)
 chars = [
-    ['bishop', 3, 3],
-    ['queen', 7, 7]
+    ['king', 3, 3],
+    ['bishop', 3, 7],
+    ['queen', 5, 5],
 ]
 b = Board(chars)
 
+print '\n'
 board = map(lambda x: map(lambda y: str(y), x), b.board)
 print '\n'.join(map(lambda x: ' '.join(x), board))
+print '\n'
  
 count = [0]
 cache = {}
