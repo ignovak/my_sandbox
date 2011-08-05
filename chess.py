@@ -43,49 +43,69 @@ class Board():
       self.board[y][x] += 1
 
 
-  def __rook(self, x, y):
-    for i in range(0, self.SIZE):
-      self.__incrCell(x, i)
-      self.__incrCell(i, y)
-
   def __getChar(self, x, y):
     y = self.SIZE - 1 - y
     if -1 < x < self.SIZE and -1 < y < self.SIZE:
       return self.board[y][x]
 
-  def __getRanges(self, x, y, name):
+  def __getRanges(self, x, y, name, direct):
     def getRange(_x, _y):
-      char = self.__getChar(_x, _y)
-      _range = None
-      if type(char).__name__ == 'str' and char != name:
-        if char in ['B', 'Q']:
-          _range = range(min(_x, x), max(_x, x))
+      def getDoubleBlockedRange(x, _x, y, _y):
+        # For cases when queen-bishop or queen-rook are on one line.
+        if _x != x:
+          return range(min(_x, x), max(_x, x))
         else:
-          if _x > x:
-            _range = range(0, _x)
-          else:
-            _range = range(_x, self.SIZE)
-        print char, _x + 1, _y + 1
-      return _range
+          return range(min(_y, y), max(_y, y))
+
+      def getSingleBlockedRange(x, _x, y, _y):
+        # For cases when queen-king or queen-knight are on one line.
+        if _x > x:
+          return range(0, _x)
+        elif _x < x:
+          return range(_x, self.SIZE)
+        else:
+          if _y > y:
+            return range(0, _y)
+          elif _y < y:
+            return range(_y, self.SIZE)
+
+      char = self.__getChar(_x, _y)
+      if type(char).__name__ == 'str' and char != name:
+        # print char, _x + 1, _y + 1
+        if direct == 'diag' and char in ['B', 'Q'] \
+            or direct == 'line' and char in ['R', 'Q']:
+          return getDoubleBlockedRange(x, _x, y, _y)
+        else:
+          return getSingleBlockedRange(x, _x, y, _y)
 
     rangeX = rangeY = range(0, self.SIZE)
     for i in range(0, self.SIZE):
-      rangeX = getRange(i, i - x + y) or rangeX
-      rangeY = getRange(i, -i + x + y) or rangeY
+      if direct == 'diag':
+        rangeX = getRange(i, i - x + y) or rangeX
+        rangeY = getRange(i, -i + x + y) or rangeY
+      elif direct == 'line':
+        rangeX = getRange(x, i) or rangeX
+        rangeY = getRange(i, y) or rangeY
 
     return (rangeX, rangeY)
 
-  def __bishop(self, x, y, name='B'):
-    rangeX, rangeY = self.__getRanges(x, y, name)
-
+  def __rook(self, x, y, name='R'):
+    rangeX = rangeY = range(0, self.SIZE)
+    rangeX, rangeY = self.__getRanges(x, y, name, direct='line')
     for i in rangeX:
-      char = self.__incrCell(i, i - x + y)
-
+      self.__incrCell(x, i)
     for i in rangeY:
-      char = self.__incrCell(i, -i + x + y)
+      self.__incrCell(i, y)
+
+  def __bishop(self, x, y, name='B'):
+    rangeX, rangeY = self.__getRanges(x, y, name, direct='diag')
+    for i in rangeX:
+      self.__incrCell(i, i - x + y)
+    for i in rangeY:
+      self.__incrCell(i, -i + x + y)
 
   def __queen(self, x, y):
-    self.__rook(x, y)
+    self.__rook(x, y, 'Q')
     self.__bishop(x, y, 'Q')
 
   def __king(self, x, y):
@@ -101,8 +121,10 @@ class Board():
 
 # b.applyChar('queen', 5, 3)
 chars = [
-    ['king', 3, 3],
+    ['knight', 4, 4],
+    ['king', 2, 2],
     ['bishop', 3, 7],
+    ['rook', 5, 2],
     ['queen', 5, 5],
 ]
 b = Board(chars)
