@@ -195,7 +195,16 @@ def mix(a):
 chars = mix(list(CONSECUENCE))
 for i in range(len(chars)):
   cons = chars[i]
-  print cons
-# pprint()
-# print count
+  b = Board(zip(CONSECUENCE, [i[0] for i in points], [i[1] for i in points]))
+  print '\n', i
+  b.printBoard()
 
+  m = b.getQuickMax()
+  if m > sugg['max']:
+    sugg['max'] = m
+    sugg['cons'] = cons
+    m = b.getMax()
+    sugg['x'] = m[1]
+    sugg['y'] = m[2]
+
+# TODO: generate keys
