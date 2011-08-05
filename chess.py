@@ -9,12 +9,19 @@ class Board():
   def __init__(self, chars=[]):
     self.SIZE = 8
     self.board = [[0 for i in range(self.SIZE)] for i in range(self.SIZE)]
+    # self.OLD_CHARS = {
+    #   'queen':  ['Q',  self.__queen],
+    #   'king':   ['K',   self.__king],
+    #   'rook':   ['R',   self.__rook],
+    #   'bishop': ['B', self.__bishop],
+    #   'knight': ['H', self.__knight]
+    # }
     self.CHARS = {
-      'queen':  ['Q',  self.__queen],
-      'king':   ['K',   self.__king],
-      'rook':   ['R',   self.__rook],
-      'bishop': ['B', self.__bishop],
-      'knight': ['H', self.__knight]
+        'Q':  self.__queen,
+        'K':   self.__king,
+        'R':   self.__rook,
+        'B': self.__bishop,
+        'H': self.__knight
     }
 
     for char in chars:
@@ -32,8 +39,8 @@ class Board():
       print name + ': coordinate collision'
       return
     
-    self.board[self.SIZE - 1 - y][x] = self.CHARS[name][0]
-    self.CHARS[name][1](x, y)
+    self.board[self.SIZE - 1 - y][x] = name
+    self.CHARS[name](x, y)
 
   def printBoard(self):
     print '\n'
@@ -143,18 +150,29 @@ class Board():
           self.__incrCell(x - i, y - j)
 
 # b.applyChar('queen', 5, 3)
-chars = [
-    ['knight', 4, 4],
-    ['king', 2, 2],
-    ['bishop', 3, 7],
-    ['rook', 5, 2],
-    ['queen', 5, 5],
+CONSECUENCE = ('K', 'H', 'B', 'R', 'Q')
+points = [
+  (1, 2),
+  (4, 1),
+  (4, 4),
+  (2, 5),
+  (3, 7),
 ]
-b = Board(chars)
 
+chars = zip(CONSECUENCE, [i[0] for i in points], [i[1] for i in points])
+
+b = Board(chars)
 b.printBoard()
 print b.getMax()
 print b.getQuickMax()
+print ''.join(CONSECUENCE)
+
+sugg = {
+  'max': 0,
+  'cons': '',
+  'x': 0,
+  'y': 0
+}
  
 count = [0]
 cache = {}
@@ -174,6 +192,10 @@ def mix(a):
       return res
 
 
-# chars = [i for i in CHARS]
-# pprint(mix(chars))
+chars = mix(list(CONSECUENCE))
+for i in range(len(chars)):
+  cons = chars[i]
+  print cons
+# pprint()
+# print count
 
