@@ -3,65 +3,69 @@
 
 from pprint import pprint
 
-SIZE = 8
-board = [[0 for i in range(SIZE)] for i in range(SIZE)]
+class Board():
+  SIZE = 8
 
-def incrCell(x, y):
-  if -1 < x < SIZE and -1 < y < SIZE:
-    if type(board[y][x]).__name__ == 'int':
-      board[y][x] += 1
+  def __init__(self):
+    self.board = [[0 for i in range(self.SIZE)] for i in range(self.SIZE)]
+    self.CHARS = {
+      'queen':  ['Q',  self.__queen],
+      'king':   ['K',   self.__king],
+      'rook':   ['R',   self.__rook],
+      'bishop': ['B', self.__bishop],
+      'knight': ['H', self.__knight]
+    }
 
-def rook(x, y):
-  for i in range(0, SIZE):
-    incrCell(x, i)
-    incrCell(i, y)
+  def applyChar(self, name, x, y):
+    x -= 1
+    y -= 1
 
-def bishop(x, y):
-  for i in range(0, SIZE + 1):
-    incrCell(i, i - x + y)
-    incrCell(SIZE - i, i - SIZE + x + y)
+    if not(-1 < x < self.SIZE and -1 < y < self.SIZE):
+      print name + ': invalid coordinate'
+      return
 
-def queen(x, y):
-  rook(x, y)
-  bishop(x, y)
+    if type(self.board[y][x]).__name__ == 'str':
+      print name + ': coordinate collision'
+      return
+    
+    self.board[self.SIZE - 1 - y][x] = self.CHARS[name][0]
+    self.CHARS[name][1](x, self.SIZE - 1 - y)
 
-def king(x, y):
-  for i in range(x - 1, x + 2):
-    for j in range(y - 1, y + 2):
-      incrCell(i, j)
+  def __incrCell(self, x, y):
+    if -1 < x < self.SIZE and -1 < y < self.SIZE:
+      if type(self.board[y][x]).__name__ == 'int':
+        self.board[y][x] += 1
 
-def knight(x, y):
-  for i in range(-2, 3):
-    for j in range(-2, 3):
-      if abs(i) + abs(j) == 3:
-        incrCell(x - i, y - j)
 
-CHARS = {
-  'queen': ['Q', queen],
-  'king': ['K', king],
-  'rook': ['R', rook],
-  'bishop': ['B', bishop],
-  'knight': ['H', knight]
-}
+  def __rook(self, x, y):
+    for i in range(0, self.SIZE):
+      self.__incrCell(x, i)
+      self.__incrCell(i, y)
 
-def applyChar(name, x, y):
-  x -= 1
-  y -= 1
+  def __bishop(self, x, y):
+    for i in range(0, self.SIZE + 1):
+      self.__incrCell(i, i - x + y)
+      self.__incrCell(self.SIZE - i, i - self.SIZE + x + y)
 
-  if not(-1 < x < SIZE and -1 < y < SIZE):
-    print name + ': invalid coordinate'
-    return
+  def __queen(self, x, y):
+    self.__rook(x, y)
+    self.__bishop(x, y)
 
-  if type(board[y][x]).__name__ == 'str':
-    print name + ': coordinate collision'
-    return
-  
-  board[y][x] = CHARS[name][0]
-  CHARS[name][1](x, y)
+  def __king(self, x, y):
+    for i in range(x - 1, x + 2):
+      for j in range(y - 1, y + 2):
+        self.__incrCell(i, j)
 
-# applyChar('queen', 3, 6)
-# board = map(lambda x: map(lambda y: str(y), x), board)
-# print '\n'.join(map(lambda x: ' '.join(x), board))
+  def __knight(self, x, y):
+    for i in range(-2, 3):
+      for j in range(-2, 3):
+        if abs(i) + abs(j) == 3:
+          self.__incrCell(x - i, y - j)
+
+b = Board()
+b.applyChar('queen', 3, 5)
+board = map(lambda x: map(lambda y: str(y), x), b.board)
+print '\n'.join(map(lambda x: ' '.join(x), board))
 
 count = [0]
 cache = {}
